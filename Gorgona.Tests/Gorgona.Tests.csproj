@@ -54,6 +54,10 @@
       <Project>{01ae172f-a4ff-4eca-9166-24f52ffdd2f8}</Project>
       <Name>Gorgona.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Gorgona.Exceptions\Gorgona.Exceptions.csproj">
+      <Project>{7da1c726-2474-4926-b5c5-3c4babff2987}</Project>
+      <Name>Gorgona.Exceptions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

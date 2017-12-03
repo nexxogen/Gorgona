@@ -4,14 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{01AE172F-A4FF-4ECA-9166-24F52FFDD2F8}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Gorgona.Core</RootNamespace>
-    <AssemblyName>Gorgona.Core</AssemblyName>
+    <ProjectGuid>{C887CCB8-AC68-4103-9CCF-16529F5E0274}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Gorgona.Interface</RootNamespace>
+    <AssemblyName>Gorgona.Interface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,9 +30,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,16 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board\Board.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gorgona.Exceptions\Gorgona.Exceptions.csproj">
-      <Project>{7da1c726-2474-4926-b5c5-3c4babff2987}</Project>
-      <Name>Gorgona.Exceptions</Name>
+    <ProjectReference Include="..\Gorgona.Core\Gorgona.Core.csproj">
+      <Project>{01ae172f-a4ff-4eca-9166-24f52ffdd2f8}</Project>
+      <Name>Gorgona.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
