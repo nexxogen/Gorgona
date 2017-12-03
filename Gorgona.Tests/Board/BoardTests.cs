@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Gorgona.Core.Board;
 using Gorgona.Exceptions;
 
@@ -112,6 +111,32 @@ namespace Gorgona.Tests
                 bool result = Board.IsSquareOccupied((5, 5));
 
                 Assert.IsTrue(result);
+            }
+
+            [Test]
+            public void _For_Non_Existent_Throw_Exception()
+            {
+                Assert.Throws<CoordinatesOutOfRangeException>(() => Board.IsSquareOccupied((0, -2)));
+            }
+        }
+
+        [TestFixture]
+        public class GetPieceTests
+        {
+            [Test]
+            public void _For_Initial_55_Get_Sente_King()
+            {
+                char result = Board.GetPiece((5, 5));
+
+                Assert.AreEqual('K', result);
+            }
+
+            [Test]
+            public void _For_Initial_12_Get_Pawn()
+            {
+                char result = Board.GetPiece((1, 2));
+
+                Assert.AreEqual('p', result);
             }
         }
     }

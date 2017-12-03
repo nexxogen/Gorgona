@@ -87,15 +87,12 @@ namespace Gorgona.Core.Board
         public static bool IsSquareOccupied((int, int) coordinates)
         {
             int index = GetIndex(coordinates);
-            return _squares[index] == 'o';
+            return _squares[index] != 'o'; ;
         }
 
-        public static void PrintBoard()
+        public static char GetPiece((int, int) coordinates)
         {
-            foreach (char square in _squares)
-            {
-                System.Console.WriteLine(square);
-            }
+            return _squares[GetIndex(coordinates)];
         }
 
         #endregion
