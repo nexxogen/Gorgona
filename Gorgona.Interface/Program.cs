@@ -1,4 +1,4 @@
-﻿using Gorgona.Core.Board;
+﻿using Gorgona.Core;
 
 namespace Gorgona.Interface
 {

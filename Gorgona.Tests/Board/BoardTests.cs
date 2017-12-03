@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Gorgona.Core.Board;
+using Gorgona.Core;
 using Gorgona.Exceptions;
 
 namespace Gorgona.Tests

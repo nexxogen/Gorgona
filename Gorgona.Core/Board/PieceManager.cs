@@ -1,4 +1,4 @@
-﻿namespace Gorgona.Core.Board
+﻿namespace Gorgona.Core
 {
     public class PieceManager
     {

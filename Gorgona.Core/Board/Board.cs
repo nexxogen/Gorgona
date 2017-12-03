@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Gorgona.Exceptions;
 
-namespace Gorgona.Core.Board
+namespace Gorgona.Core
 {
     public static class Board
     {
