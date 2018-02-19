@@ -46,25 +46,25 @@ namespace Gorgona.Tests
         public class IsEdgeSquareTests
         {
             [Test]
-            public void _For_34_Return_False()
+            public void _For_21_And_North_Returns_True()
             {
-                bool result = Board.IsEdgeSquare((3, 4));
-
-                Assert.IsFalse(result);
-            }
-
-            [Test]
-            public void _For_15_Return_True()
-            {
-                bool result = Board.IsEdgeSquare((1, 5));
+                bool result = Board.IsEdgeSquare((2, 1), Board.WorldSide.North);
 
                 Assert.IsTrue(result);
             }
 
             [Test]
+            public void _For_15_And_North_Returns_False()
+            {
+                bool result = Board.IsEdgeSquare((1, 5), Board.WorldSide.North);
+
+                Assert.IsFalse(result);
+            }
+
+            [Test]
             public void _For_Non_Existent_Throw_Exception()
             {
-                Assert.Throws<CoordinatesOutOfRangeException>(() => Board.IsEdgeSquare((0, -1)));
+                Assert.Throws<CoordinatesOutOfRangeException>(() => Board.IsEdgeSquare((0, -1), Board.WorldSide.East));
             }
         }
 
@@ -137,6 +137,46 @@ namespace Gorgona.Tests
                 char result = Board.GetPiece((1, 2));
 
                 Assert.AreEqual('p', result);
+            }
+        }
+
+        [TestFixture]
+        public class IsSquareAvailableTests
+        {
+            [Test]
+            public void _For_Sente_55_Returns_False()
+            {
+                int side = 1;
+                (int, int) square = (5, 5);
+
+                Assert.IsFalse(Board.IsSquareAvailable(square, side));
+            }
+
+            [Test]
+            public void _For_Sente_35_Returns_False()
+            {
+                int side = 1;
+                (int, int) square = (3, 5);
+
+                Assert.IsFalse(Board.IsSquareAvailable(square, side));
+            }
+
+            [Test]
+            public void _For_Sente_44_Returns_True()
+            {
+                int side = 1;
+                (int, int) square = (4, 4);
+
+                Assert.IsTrue(Board.IsSquareAvailable(square, side));
+            }
+
+            [Test]
+            public void _For_Sente_34_Returns_True()
+            {
+                int side = 1;
+                (int, int) square = (3, 4);
+
+                Assert.IsTrue(Board.IsSquareAvailable(square, side));
             }
         }
     }
