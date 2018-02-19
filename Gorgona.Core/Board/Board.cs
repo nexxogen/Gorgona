@@ -87,7 +87,7 @@ namespace Gorgona.Core
                     return coordinates.Item2 == 1 || coordinates.Item1 == 1;
 
                 case WorldSide.NorthWest:
-                    return coordinates.Item1 == 1 || coordinates.Item1 == 5;
+                    return coordinates.Item2 == 1 || coordinates.Item1 == 5;
 
                 case WorldSide.SouthEast:
                     return coordinates.Item2 == 5 || coordinates.Item1 == 1;

@@ -137,6 +137,7 @@ namespace Gorgona.Tests
                     moves);
             }
 
+            [Test]
             public void _Get_For_Initial_Gote_Bishop()
             {
                 List<(int, int)> moves = PieceManager.GetMoves((4, 1));
@@ -144,10 +145,10 @@ namespace Gorgona.Tests
                 Assert.AreEqual(
                     new List<(int, int)>
                     {
+                        (5, 2),
                         (3, 2),
                         (2, 3),
-                        (1, 4),
-                        (5, 2)
+                        (1, 4)
                     },
                     moves);
             }
