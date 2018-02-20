@@ -7,7 +7,11 @@ namespace Gorgona.Core
     {
         public enum WorldSide { North, East, South, West, NorthEast, NorthWest, SouthEast, SouthWest }
         private static char[] _squares;
-        private static Hashtable _dictionary;
+
+        public static char[] Squares
+        {
+            set { _squares = value; }
+        }
 
         #region Static Constructor
 
@@ -21,33 +25,6 @@ namespace Gorgona.Core
                 'P', 'o', 'o', 'o', 'o',
                 'K', 'G', 'S', 'B', 'R'
             };
-
-            _dictionary = new Hashtable();
-            _dictionary.Add(0, (5, 1));
-            _dictionary.Add(1, (4, 1));
-            _dictionary.Add(2, (3, 1));
-            _dictionary.Add(3, (2, 1));
-            _dictionary.Add(4, (1, 1));
-            _dictionary.Add(5, (5, 2));
-            _dictionary.Add(6, (4, 2));
-            _dictionary.Add(7, (3, 2));
-            _dictionary.Add(8, (2, 2));
-            _dictionary.Add(9, (1, 2));
-            _dictionary.Add(10, (5, 3));
-            _dictionary.Add(11, (4, 3));
-            _dictionary.Add(12, (3, 3));
-            _dictionary.Add(13, (2, 3));
-            _dictionary.Add(14, (1, 3));
-            _dictionary.Add(15, (5, 4));
-            _dictionary.Add(16, (4, 4));
-            _dictionary.Add(17, (3, 4));
-            _dictionary.Add(18, (2, 4));
-            _dictionary.Add(19, (1, 4));
-            _dictionary.Add(20, (5, 5));
-            _dictionary.Add(21, (4, 5));
-            _dictionary.Add(22, (3, 5));
-            _dictionary.Add(23, (2, 5));
-            _dictionary.Add(24, (1, 5));
         }
 
         #endregion
