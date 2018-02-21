@@ -1,4 +1,5 @@
 ﻿using Gorgona.Exceptions;
+using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
@@ -18,6 +19,9 @@ namespace Gorgona.Core
 {
     public class PieceManager
     {
+        private static Hashtable _squaresHitBySente = new Hashtable();
+        private static Hashtable _squaresHitByGote = new Hashtable();
+
         public static List<(int, int)> GetMoves((int, int) coordinates)
         {
             if (!Board.IsRealSquare(coordinates))
@@ -56,13 +60,31 @@ namespace Gorgona.Core
             {
                 return GetBishopMoves(coordinates, side);
             }
+            else if (piece == 'D' || piece == 'd')
+            {
+                return GetDragonMoves(coordinates, side);
+            }
+            else if (piece == 'H' || piece == 'h')
+            {
+                return GetHorseMoves(coordinates, side);
+            }
 
             return new List<(int, int)> { }; // Dummy
         }
 
         private static List<(int, int)> GetPawnMoves((int, int) coordinates, int side)
         {
-            return new List<(int, int)> { (coordinates.Item1, coordinates.Item2 - 1 * side) };
+            (int, int) square = (coordinates.Item1, coordinates.Item2 - 1 * side);
+
+            if (Board.IsRealSquare(square) && Board.IsSquareAvailable(square, side))
+            {
+                AddToHitSquares(square, side);
+                return new List<(int, int)> { square };
+            }
+            else
+            {
+                return new List<(int, int)>();
+            }
         }
 
         private static List<(int, int)> GetGoldMoves((int, int) coordinates, int side)
@@ -75,53 +97,36 @@ namespace Gorgona.Core
             (int, int) square5 = (coordinates.Item1 - 1 * side, coordinates.Item2);
             (int, int) square6 = (coordinates.Item1, coordinates.Item2 + 1 * side);
 
-            if (Board.IsRealSquare(square1) && Board.IsSquareAvailable(square1, side))
+            AddAvailableSquare(moves, square1, side);
+            AddAvailableSquare(moves, square2, side);
+            AddAvailableSquare(moves, square3, side);
+            AddAvailableSquare(moves, square4, side);
+            AddAvailableSquare(moves, square5, side);
+            AddAvailableSquare(moves, square6, side);
+            foreach (var square in _squaresHitBySente.Keys)
             {
-                moves.Add(square1);
+                System.Console.WriteLine(square);
             }
-
-            if (Board.IsRealSquare(square2) && Board.IsSquareAvailable(square2, side))
-            {
-                moves.Add(square2);
-            }
-
-            if (Board.IsRealSquare(square3) && Board.IsSquareAvailable(square3, side))
-            {
-                moves.Add(square3);
-            }
-
-            if (Board.IsRealSquare(square4) && Board.IsSquareAvailable(square4, side))
-            {
-                moves.Add(square4);
-            }
-
-            if (Board.IsRealSquare(square5) && Board.IsSquareAvailable(square5, side))
-            {
-                moves.Add(square5);
-            }
-
-            if (Board.IsRealSquare(square6) && Board.IsSquareAvailable(square6, side))
-            {
-                moves.Add(square6);
-            }
-
             return moves;
         }
 
         private static List<(int, int)> GetSilverMoves((int, int) coordinates, int side)
         {
-            List<(int, int)> squares = new List<(int, int)>
-            {
-                (coordinates.Item1 + 1 * side, coordinates.Item2 - 1 * side),
-                (coordinates.Item1, coordinates.Item2 - 1 * side),
-                (coordinates.Item1 - 1 * side, coordinates.Item2 - 1 * side),
-                (coordinates.Item1 - 1 * side, coordinates.Item2 + 1 * side),
-                (coordinates.Item1 + 1 * side, coordinates.Item2 + 1 * side)
-            };
+            List<(int, int)> moves = new List<(int, int)>();
+            
+            (int, int) square1 = (coordinates.Item1 + 1 * side, coordinates.Item2 - 1 * side);
+            (int, int) square2 = (coordinates.Item1, coordinates.Item2 - 1 * side);
+            (int, int) square3 = (coordinates.Item1 - 1 * side, coordinates.Item2 - 1 * side);
+            (int, int) square4 = (coordinates.Item1 - 1 * side, coordinates.Item2 + 1 * side);
+            (int, int) square5 = (coordinates.Item1 + 1 * side, coordinates.Item2 + 1 * side);
 
-            RemoveIllegalSquares(squares, side);
+            AddAvailableSquare(moves, square1, side);
+            AddAvailableSquare(moves, square2, side);
+            AddAvailableSquare(moves, square3, side);
+            AddAvailableSquare(moves, square4, side);
+            AddAvailableSquare(moves, square5, side);
 
-            return squares;
+            return moves;
         }
 
         private static List<(int, int)> GetRookMoves((int, int) coordinates, int side)
@@ -136,6 +141,7 @@ namespace Gorgona.Core
                     if (Board.IsSquareAvailable((coordinates.Item1, i), side))
                     {
                         squares.Add((coordinates.Item1, i));
+                        AddToHitSquares((coordinates.Item1, i), side);
                     }
                     else
                     {
@@ -157,6 +163,7 @@ namespace Gorgona.Core
                     if (Board.IsSquareAvailable((coordinates.Item1, i), side))
                     {
                         squares.Add((coordinates.Item1, i));
+                        AddToHitSquares((coordinates.Item1, i), side);
                     }
                     else
                     {
@@ -178,6 +185,7 @@ namespace Gorgona.Core
                     if (Board.IsSquareAvailable((i, coordinates.Item2), side))
                     {
                         squares.Add((i, coordinates.Item2));
+                        AddToHitSquares((i, coordinates.Item2), side);
                     }
                     else
                     {
@@ -199,6 +207,7 @@ namespace Gorgona.Core
                     if (Board.IsSquareAvailable((i, coordinates.Item2), side))
                     {
                         squares.Add((i, coordinates.Item2));
+                        AddToHitSquares((i, coordinates.Item2), side);
                     }
                     else
                     {
@@ -219,6 +228,7 @@ namespace Gorgona.Core
         {
             List<(int, int)> squares = new List<(int, int)>();
             int item2 = coordinates.Item2;
+            (int, int) lastAdded;
 
             // North-West
             if (!Board.IsEdgeSquare(coordinates, Board.WorldSide.NorthWest))
@@ -227,14 +237,16 @@ namespace Gorgona.Core
                 {
                     if (Board.IsSquareAvailable((i, item2 - 1), side))
                     {
-                        squares.Add((i, item2-- - 1));
+                        lastAdded = (i, item2-- - 1);
+                        squares.Add(lastAdded);
+                        AddToHitSquares(lastAdded, side);
                     }
                     else
                     {
                         break;
                     }
 
-                    if (Board.IsSquareOccupied((i, item2 - 1)))
+                    if (Board.IsEdgeSquare(lastAdded, Board.WorldSide.NorthWest) || Board.IsSquareOccupied(lastAdded))
                     {
                         break;
                     }
@@ -250,14 +262,16 @@ namespace Gorgona.Core
                 {
                     if (Board.IsSquareAvailable((i, item2 + 1), side))
                     {
-                        squares.Add((i, item2++ + 1));
+                        lastAdded = (i, item2++ + 1);
+                        squares.Add(lastAdded);
+                        AddToHitSquares(lastAdded, side);
                     }
                     else
                     {
                         break;
                     }
 
-                    if (Board.IsSquareOccupied((i, item2 + 1)))
+                    if (Board.IsEdgeSquare(lastAdded, Board.WorldSide.SouthWest) || Board.IsSquareOccupied(lastAdded))
                     {
                         break;
                     }
@@ -273,14 +287,16 @@ namespace Gorgona.Core
                 {
                     if (Board.IsSquareAvailable((i, item2 - 1), side))
                     {
-                        squares.Add((i, item2-- - 1));
+                        lastAdded = (i, item2-- - 1);
+                        squares.Add(lastAdded);
+                        AddToHitSquares(lastAdded, side);
                     }
                     else
                     {
                         break;
                     }
 
-                    if (Board.IsSquareOccupied((i, item2 - 1)))
+                    if (Board.IsEdgeSquare(lastAdded, Board.WorldSide.NorthEast) || Board.IsSquareOccupied(lastAdded))
                     {
                         break;
                     }
@@ -296,10 +312,16 @@ namespace Gorgona.Core
                 {
                     if (Board.IsSquareAvailable((i, item2 + 1), side))
                     {
-                        squares.Add((i, item2++ + 1));
+                        lastAdded = (i, item2++ + 1);
+                        squares.Add(lastAdded);
+                        AddToHitSquares(lastAdded, side);
+                    }
+                    else
+                    {
+                        break;
                     }
 
-                    if (Board.IsSquareOccupied((i, item2 + 1)))
+                    if (Board.IsEdgeSquare(lastAdded, Board.WorldSide.SouthEast) || Board.IsSquareOccupied(lastAdded))
                     {
                         break;
                     }
@@ -309,15 +331,71 @@ namespace Gorgona.Core
             return squares;
         }
 
+        private static List<(int, int)> GetDragonMoves((int, int) coordinates, int side)
+        {
+            List<(int, int)> rookMoves = GetRookMoves(coordinates, side);
+
+            (int, int) square1 = (coordinates.Item1 + 1, coordinates.Item2 - 1);
+            (int, int) square2 = (coordinates.Item1 - 1, coordinates.Item2 - 1);
+            (int, int) square3 = (coordinates.Item1 + 1, coordinates.Item2 + 1);
+            (int, int) square4 = (coordinates.Item1 + 1, coordinates.Item2 + 1);
+
+            AddAvailableSquare(rookMoves, square1, side);
+            AddAvailableSquare(rookMoves, square2, side);
+            AddAvailableSquare(rookMoves, square3, side);
+            AddAvailableSquare(rookMoves, square4, side);
+
+            return rookMoves;
+        }
+
+        private static List<(int, int)> GetHorseMoves((int, int) coordinates, int side)
+        {
+            List<(int, int)> bishopMoves = GetBishopMoves(coordinates, side);
+
+            (int, int) square1 = (coordinates.Item1 + 1, coordinates.Item2);
+            (int, int) square2 = (coordinates.Item1, coordinates.Item2 - 1);
+            (int, int) square3 = (coordinates.Item1 - 1, coordinates.Item2);
+            (int, int) square4 = (coordinates.Item1, coordinates.Item2 + 1);
+
+            AddAvailableSquare(bishopMoves, square1, side);
+            AddAvailableSquare(bishopMoves, square2, side);
+            AddAvailableSquare(bishopMoves, square3, side);
+            AddAvailableSquare(bishopMoves, square4, side);
+
+            return bishopMoves;
+        }
 
         private static int GetSideForPiece(char piece)
         {
             return char.IsUpper(piece) ? 1 : -1;
         }
 
-        private static void RemoveIllegalSquares(List<(int, int)> squares, int side)
+        private static void AddAvailableSquare(List<(int, int)> squares, (int, int) square, int side)
         {
-            squares.RemoveAll(e => !Board.IsRealSquare(e) || !Board.IsSquareAvailable(e, side));
+            if (Board.IsRealSquare(square) && Board.IsSquareAvailable(square, side))
+            {
+                squares.Add(square);
+                AddToHitSquares(square, side);
+            }
+        }
+
+        private static void AddToHitSquares((int, int) square, int side)
+        {
+            if (side == 1 && !_squaresHitBySente.ContainsKey(square))
+            {
+                _squaresHitBySente.Add(square, 0);
+            }
+            else if (side == -1 && !_squaresHitByGote.ContainsKey(square))
+            {
+                _squaresHitByGote.Add(square, 0);
+            }
+        }
+
+        private static bool IsHitByOpponent((int, int) square, int side)
+        {
+            return side == 1
+                ? _squaresHitByGote.ContainsKey(square)
+                : _squaresHitBySente.ContainsKey(square);
         }
     }
 }

@@ -27,6 +27,15 @@ namespace Gorgona.Tests
                 'K', 'o', 'o', 'B', 'R'
             };
 
+            char[] position2 =
+{
+                'o', 'o', 'o', 'o', 'k',
+                'h', 'o', 'g', 's', 'p',
+                'r', 'o', 'o', 'o', 'o',
+                'P', 'G', 'S', 'o', 'o',
+                'K', 'o', 'o', 'B', 'D'
+            };
+
             #region Sente Pieces
 
             [Test]
@@ -34,7 +43,7 @@ namespace Gorgona.Tests
             {
                 Board.Squares = _initialPosition;
                 List<(int, int)> moves = PieceManager.GetMoves((5, 4));
-
+                
                 Assert.AreEqual((5, 3), moves[0]);
             }
 
@@ -150,6 +159,22 @@ namespace Gorgona.Tests
                     moves);
             }
 
+            [Test]
+            public void _Get_For_Position2_Sente_Dragon()
+            {
+                Board.Squares = position2;
+                List<(int, int)> moves = PieceManager.GetMoves((1, 5));
+
+                Assert.AreEqual(
+                    new List<(int, int)>
+                    {
+                        (1, 4),
+                        (1, 3),
+                        (1, 2),
+                        (2, 4)
+                    },
+                    moves);
+            }
 
             #endregion
 
@@ -228,6 +253,42 @@ namespace Gorgona.Tests
                         (1, 4)
                     },
                     moves);
+            }
+
+            [Test]
+            public void _Get_For_Position1_Gote_Silver()
+            {
+                Board.Squares = position1;
+                List<(int, int)> moves = PieceManager.GetMoves((2, 2));
+
+                Assert.AreEqual(
+                    new List<(int, int)>
+                    {
+                        (1, 3),
+                        (2, 3),
+                        (3, 3),
+                        (3, 1)
+                    },
+                    moves);
+            }
+
+            [Test]
+            public void _Get_For_Position2_Gote_Horse()
+            {
+                Board.Squares = position2;
+                List<(int, int)> moves = PieceManager.GetMoves((5, 2));
+
+                Assert.AreEqual(
+                    new List<(int, int)>
+                    {
+                        (4, 1),
+                        (4, 3),
+                        (3, 4),
+                        (5, 1),
+                        (4, 2)
+                    },
+                    moves);
+
             }
 
             #endregion
