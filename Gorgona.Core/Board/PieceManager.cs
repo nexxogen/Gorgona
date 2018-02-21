@@ -103,10 +103,7 @@ namespace Gorgona.Core
             AddAvailableSquare(moves, square4, side);
             AddAvailableSquare(moves, square5, side);
             AddAvailableSquare(moves, square6, side);
-            foreach (var square in _squaresHitBySente.Keys)
-            {
-                System.Console.WriteLine(square);
-            }
+
             return moves;
         }
 
